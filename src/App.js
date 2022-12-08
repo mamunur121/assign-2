@@ -41,6 +41,14 @@ function App() {
       });
   };
 
+  const handleDelete = (itemId) => {
+    const deleteItem = data.filter((item) => item["_id"] !== itemId);
+    axios.delete(`http://localhost:9000/dishes/${itemId}`).then((data) => {
+      setData((c) => [...c, data]);
+    });
+    setData(deleteItem);
+  };
+
   return (
     <div>
       <div className={classNames(data.length === 0 ? "hidden" : "container")}>
@@ -48,20 +56,21 @@ function App() {
           data.map((item) => {
             return (
               <div key={item._id} className="item">
-                <>
-                  <h2>Name: {item.name}</h2>
-                  <p>Description: {item.description}</p>
-                  <h3>
-                    Price:{" "}
-                    {new Intl.NumberFormat("de-DE", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(item.price)}
-                  </h3>
-                  <p>Menu: {item.category}</p>
-                  <p>Day of the Time: {item.category1}</p>
-                  <p>Availability: {item.available}</p>
-                </>
+                <h2>Name: {item.name}</h2>
+                <p>Description: {item.description}</p>
+                <h3>
+                  Price:{" "}
+                  {new Intl.NumberFormat("de-DE", {
+                    style: "currency",
+                    currency: "EUR",
+                  }).format(item.price)}
+                </h3>
+                <p>Menu: {item.category}</p>
+                <p>Day of the Time: {item.category1}</p>
+                <p>Availability: {item.available}</p>
+                <button onClick={() => handleDelete(item._id)}>
+                  Delete Item:
+                </button>
               </div>
             );
           })}
