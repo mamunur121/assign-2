@@ -50,27 +50,39 @@ function App() {
   };
 
   return (
-    <div>
+    <div key={Math.random()}>
       <div className={classNames(data.length === 0 ? "hidden" : "container")}>
         {data &&
           data.map((item) => {
             return (
               <div key={item._id} className="item">
-                <h2>Name: {item.name}</h2>
-                <p>Description: {item.description}</p>
-                <h3>
-                  Price:{" "}
-                  {new Intl.NumberFormat("de-DE", {
-                    style: "currency",
-                    currency: "EUR",
-                  }).format(item.price)}
-                </h3>
-                <p>Menu: {item.category}</p>
-                <p>Day of the Time: {item.category1}</p>
-                <p>Availability: {item.available}</p>
-                <button onClick={() => handleDelete(item._id)}>
-                  Delete Item:
-                </button>
+                <div className="img__wrapper">
+                  <p
+                    className={classNames(
+                      item?.available === "no" ? "sold_out" : ""
+                    )}
+                  >
+                    Sold out
+                  </p>
+                  <h2>Name: {item.name}</h2>
+                  <p>Description: {item.description}</p>
+                  <h3>
+                    Price:{" "}
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "EUR",
+                    }).format(item.price)}
+                  </h3>
+                  <p>Menu: {item.category}</p>
+                  <p>Day of the Time: {item.category1}</p>
+                  <p>Availability: {item.available}</p>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="button"
+                  >
+                    Delete Item:
+                  </button>
+                </div>
               </div>
             );
           })}
