@@ -1,109 +1,76 @@
-import React, {useState} from 'react'
-import useDishes from "./useDishes";
-import Loading from "./Loading";
-import useCreateDishes from "./createDishes";
+import React, { useState } from "react";
+import CreateDishItems from "./components/CreateDishItem";
 import axios from "axios";
-function App() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [category1, setCategory1] = useState('');
-  const [available, setAvailable] = useState('');
+import classNames from "classnames";
 
+function App() {
   const [data, setData] = useState([]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const book = {name, description, category, category1, available}
-
-    axios
-        .put('http://localhost:9000/dishes', book)
-        .then((book) => {
-          const data = book.data;
-          setData(data);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-  };
-
-
-
-  React.useEffect(()=> {
+  React.useEffect(() => {
     fetch(`http://localhost:9000/dishes/`)
-        .then((response) => response.json())
-        .then((data) => setData(data.data));
-
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data?.data);
+        setData(data?.data);
+      });
   }, [data.length]);
 
   const handleClear = () => {
-    axios.get('http://localhost:9000/dishes/clear')
-        .then((data) => {
-          setData(data.data)
-        })
-  }
+    // setTimeout(() => {
+    //   axios.get("http://localhost:9000/dishes/clear").then((response) => response.).then((data) => {
+    //     setData(data.data);
+    //   });
+    // }, 500);
+    fetch(`http://localhost:9000/dishes/clear`)
+      .then((respinse) => respinse.json())
+      .then((data) => {
+        setData([]);
+      });
+  };
+
+  const handleSubmit = (book) => {
+    axios
+      .put("http://localhost:9000/dishes", book)
+      .then((book) => {
+        const data = book.data;
+        console.log(data);
+        setData((c) => [...c, { ...data }]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
-    <div className="App">
-        <h2>New Pet</h2>
-      <form className="pet-form" onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          id="description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        />
-        <label htmlFor="kind">Kind</label>
-        <select
-          name="kind"
-          id="kind"
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-        >
-          <option value="">Choose a kind</option>
-          <option value="starter">Starter</option>
-          <option value="main_course">Mani Course</option>
-          <option value="dessert">Dessert</option>
-          <option value="beverage">Beverage</option>
-        </select>
-        <label htmlFor="kind1">Kind1</label>
-        <select
-          name="kind1"
-          id="kind1"
-          value={category1}
-          onChange={e => setCategory1(e.target.value)}
-        >
-          <option value="">Choose a kind</option>
-          <option value="breakfast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
-          <option value="weekday">Weekday</option>
-          <option value="weekend">WeekEnd</option>
-        </select>
-        <label htmlFor="available">Available</label>
-        <select
-          name="available"
-          id="available"
-          value={available}
-          onChange={e => setAvailable(e.target.value)}
-        >
-          <option value="">Available</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-        <button type="button" onClick={handleClear}>
-          Cancel
-        </button>
-        <button type="submit">Save</button>
-      </form>
+    <div>
+      <div className={classNames(data.length === 0 ? "hidden" : "container")}>
+        {data &&
+          data.map((item) => {
+            return (
+              <div key={item._id} className="item">
+                <>
+                  <h2>Name: {item.name}</h2>
+                  <p>Description: {item.description}</p>
+                  <h3>
+                    Price:{" "}
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "EUR",
+                    }).format(item.price)}
+                  </h3>
+                  <p>Menu: {item.category}</p>
+                  <p>Day of the Time: {item.category1}</p>
+                  <p>Availability: {item.available}</p>
+                </>
+              </div>
+            );
+          })}
+      </div>
+
+      <CreateDishItems onSubmit={handleSubmit} />
+      <button onClick={handleClear} className="button">
+        Remove all Data
+      </button>
     </div>
   );
 }
