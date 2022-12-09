@@ -2,17 +2,41 @@ import React, { useState } from "react";
 import CreateDishItems from "./components/CreateDishItem";
 import axios from "axios";
 import classNames from "classnames";
+import EditPetModal from "./components/EditPetModal";
+import { updatePet } from "./api";
+import Loading from "./components/Loading";
 
 function App() {
   const [data, setData] = useState([]);
 
+  const [isNewPetOpen, setNewPetOpen] = useState(false);
+  const [currentPet, setCurrentPet] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+
+  const savePet = async (pet) => {
+    return updatePet(pet).then((updatedPet) => {
+      setData((pets) =>
+        pets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+      );
+      setCurrentPet(null);
+    });
+  };
+
   React.useEffect(() => {
-    fetch(`http://localhost:9000/dishes/`)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data?.data);
-        setData(data?.data);
-      });
+    setLoading(true);
+    let id;
+    id = window.setTimeout(() => {
+      fetch(`http://localhost:9000/dishes/`)
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data?.data);
+          setData(data?.data);
+        })
+        .finally(() => setLoading(false));
+    }, 500);
+    return () => {
+      window.clearTimeout(id);
+    };
   }, [data.length]);
 
   const handleClear = () => {
@@ -49,6 +73,10 @@ function App() {
     setData(deleteItem);
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div key={Math.random()}>
       <div className={classNames(data.length === 0 ? "hidden" : "container")}>
@@ -82,6 +110,22 @@ function App() {
                   >
                     Delete Item:
                   </button>
+                  <button
+                    className="button"
+                    onClick={() => {
+                      setNewPetOpen(true);
+                      setCurrentPet(item);
+                    }}
+                  >
+                    Edit Item:
+                  </button>
+                  {currentPet && (
+                    <EditPetModal
+                      pet={currentPet}
+                      onCancel={() => setCurrentPet(null)}
+                      onSave={savePet}
+                    />
+                  )}
                 </div>
               </div>
             );
