@@ -2,48 +2,44 @@ import React, { useState } from "react";
 import CreateDishItems from "./components/CreateDishItem";
 import axios from "axios";
 import classNames from "classnames";
-import { updatePet } from "./api";
+import EditDishItems from "./components/EditDishItem";
 import Loading from "./components/Loading";
+import { updatePet } from "./api";
 
 function App() {
   const [data, setData] = useState([]);
-
   const [isNewPetOpen, setNewPetOpen] = useState(false);
   const [currentPet, setCurrentPet] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
   const savePet = async (pet) => {
-    return updatePet(pet).then((updatedPet) => {
-      setData((pets) =>
-        pets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
-      );
-      setCurrentPet(null);
-    });
+    return updatePet(pet)
+      .then((updatedPet) => {
+        console.log("updatedPet", updatedPet?.data?._id);
+        console.log();
+        setData((pets) =>
+          pets.map((pet) =>
+            pet?._id === updatedPet?.data?._id ? updatedPet?.data : pet
+          )
+        );
+        setCurrentPet(null);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   React.useEffect(() => {
     setLoading(true);
-    let id;
-    id = window.setTimeout(() => {
-      fetch(`http://localhost:9000/dishes/`)
-        .then((response) => response.json())
-        .then((data) => {
-          // console.log(data?.data);
-          setData(data?.data);
-        })
-        .finally(() => setLoading(false));
-    }, 500);
-    return () => {
-      window.clearTimeout(id);
-    };
+    fetch(`http://localhost:9000/dishes/`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data?.data);
+      })
+      .finally(() => setLoading(false));
   }, [data.length]);
 
   const handleClear = () => {
-    // setTimeout(() => {
-    //   axios.get("http://localhost:9000/dishes/clear").then((response) => response.).then((data) => {
-    //     setData(data.data);
-    //   });
-    // }, 500);
     fetch(`http://localhost:9000/dishes/clear`)
       .then((respinse) => respinse.json())
       .then((data) => {
@@ -86,7 +82,7 @@ function App() {
                 <div className="img__wrapper">
                   <p
                     className={classNames(
-                      item?.available === "no" ? "sold_out" : ""
+                      item?.available === "no" ? "sold_out" : "hidden"
                     )}
                   >
                     Sold out
@@ -109,6 +105,26 @@ function App() {
                   >
                     Delete Item:
                   </button>
+                  <button
+                    className="button"
+                    onClick={() => {
+                      setCurrentPet(item);
+                      setNewPetOpen(true);
+                    }}
+                  >
+                    Edit Item
+                  </button>
+
+                  {currentPet && (
+                    <EditDishItems
+                      onCancel={() => {
+                        setCurrentPet(null);
+                        setNewPetOpen(false);
+                      }}
+                      onSubmit={savePet}
+                      item={item}
+                    />
+                  )}
                 </div>
               </div>
             );

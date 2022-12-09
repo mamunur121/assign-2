@@ -4,7 +4,7 @@ import Modal from "react-modal";
 const EditPetModal = ({ onCancel, pet, onSave }) => {
   return (
     <Modal isOpen={true} onRequestClose={onCancel}>
-      <h2>Edit Item</h2>
+      <h2>Edit Item mamma</h2>
     </Modal>
   );
 };

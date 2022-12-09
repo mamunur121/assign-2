@@ -8,8 +8,8 @@ const handleErrors = (res) => {
 };
 
 export const updatePet = (pet) => {
-  console.log(pet);
-  return fetch(`http://localhost:9000/dishes${pet.id}`, {
+  // console.log(pet);
+  return fetch(`http://localhost:9000/dishes`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
