@@ -1,10 +1,11 @@
 import React from "react";
+import Modal from "react-modal";
 
-const EditPetModal = () => {
+const EditPetModal = ({ onCancel, pet, onSave }) => {
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <Modal isOpen={true} onRequestClose={onCancel}>
+      <h2>Edit Item</h2>
+    </Modal>
   );
 };
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import CreateDishItems from "./components/CreateDishItem";
 import axios from "axios";
 import classNames from "classnames";
-import EditPetModal from "./components/EditPetModal";
 import { updatePet } from "./api";
 import Loading from "./components/Loading";
 
@@ -110,22 +109,6 @@ function App() {
                   >
                     Delete Item:
                   </button>
-                  <button
-                    className="button"
-                    onClick={() => {
-                      setNewPetOpen(true);
-                      setCurrentPet(item);
-                    }}
-                  >
-                    Edit Item:
-                  </button>
-                  {currentPet && (
-                    <EditPetModal
-                      pet={currentPet}
-                      onCancel={() => setCurrentPet(null)}
-                      onSave={savePet}
-                    />
-                  )}
                 </div>
               </div>
             );
