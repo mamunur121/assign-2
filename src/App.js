@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import CreateDishItems from "./components/CreateDishItem";
 import classNames from "classnames";
-import EditDishItems from "./components/EditDishItem";
 import Loading from "./components/Loading";
 import {
   deleteItem,
@@ -9,6 +8,7 @@ import {
   removeAllItems,
   update_create_Item,
 } from "./api";
+import MenuItem from "./components/MenuItem";
 
 function App() {
   const [dishItems, setDishItems] = useState([]);
@@ -89,52 +89,14 @@ function App() {
         {dishItems &&
           dishItems.map((item) => {
             return (
-              <div key={item._id} className="item">
-                <div className="img__wrapper">
-                  <p
-                    className={classNames(
-                      item?.available === "no" ? "sold_out" : "hidden"
-                    )}
-                  >
-                    Sold out
-                  </p>
-                  <h2>Name: {item.name}</h2>
-                  <p>Description: {item.description}</p>
-                  <h3>
-                    Price:{" "}
-                    {new Intl.NumberFormat("de-DE", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(item.price)}
-                  </h3>
-                  <p>Menu: {item.category}</p>
-                  <p>Day of the Time: {item.category1}</p>
-                  <p>Availability: {item.available}</p>
-                  <button onClick={() => handleDelete(item)} className="button">
-                    Delete Item:
-                  </button>
-                  <button
-                    className="button"
-                    onClick={() => {
-                      setCurrentPet(item);
-                      setNewPetOpen(true);
-                    }}
-                  >
-                    Edit Item
-                  </button>
-
-                  {currentPet && (
-                    <EditDishItems
-                      onCancel={() => {
-                        setCurrentPet(null);
-                        setNewPetOpen(false);
-                      }}
-                      onSubmit={saveItem}
-                      item={item}
-                    />
-                  )}
-                </div>
-              </div>
+              <MenuItem
+                item={item}
+                currentPet={currentPet}
+                setCurrentPet={setCurrentPet}
+                setNewPetOpen={setNewPetOpen}
+                handleDelete={() => handleDelete(item)}
+                saveItem={saveItem}
+              />
             );
           })}
       </div>
