@@ -25,7 +25,7 @@ const CreateDishItems = ({ onSubmit }) => {
 
   return (
     <div className="App">
-      <h2>New Pet</h2>
+      <h2>New Menu</h2>
       <form className="pet-form" onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
@@ -89,7 +89,9 @@ const CreateDishItems = ({ onSubmit }) => {
         <button type="button" onClick={handleClear}>
           Cancel
         </button>
-        <button type="submit">Save</button>
+        <button type="submit" disabled={!name.length}>
+          Save
+        </button>
       </form>
     </div>
   );

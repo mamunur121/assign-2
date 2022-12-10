@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import CreateDishItems from "./components/CreateDishItem";
-import axios from "axios";
 import classNames from "classnames";
 import EditDishItems from "./components/EditDishItem";
 import Loading from "./components/Loading";
-import { updatePet } from "./api";
+import {
+  deleteItem,
+  listItems,
+  removeAllItems,
+  update_create_Item,
+} from "./api";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [dishItems, setDishItems] = useState([]);
   const [isNewPetOpen, setNewPetOpen] = useState(false);
   const [currentPet, setCurrentPet] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  const savePet = async (pet) => {
-    return updatePet(pet)
-      .then((updatedPet) => {
-        console.log("updatedPet", updatedPet?.data?._id);
-        console.log();
-        setData((pets) =>
-          pets.map((pet) =>
-            pet?._id === updatedPet?.data?._id ? updatedPet?.data : pet
+  const saveItem = async (item) => {
+    return update_create_Item(item)
+      .then((updatedItem) => {
+        setDishItems((items) =>
+          items.map((item) =>
+            item?._id === updatedItem?.data?._id ? updatedItem?.data : item
           )
         );
         setCurrentPet(null);
@@ -31,41 +33,48 @@ function App() {
 
   React.useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:9000/dishes/`)
-      .then((response) => response.json())
+    listItems()
       .then((data) => {
-        setData(data?.data);
+        setDishItems(data?.data);
       })
       .finally(() => setLoading(false));
-  }, [data.length]);
+  }, [dishItems.length]);
 
-  const handleClear = () => {
-    fetch(`http://localhost:9000/dishes/clear`)
-      .then((respinse) => respinse.json())
-      .then((data) => {
-        setData([]);
+  const handleRemoveItems = () => {
+    const result = window.confirm(
+      `Are you sure you want to Delete All the the Items?`
+    );
+    if (result) {
+      removeAllItems().then(() => {
+        setDishItems([]);
       });
+    }
   };
 
-  const handleSubmit = (book) => {
-    axios
-      .put("http://localhost:9000/dishes", book)
-      .then((book) => {
-        const data = book.data;
-        console.log(data);
-        setData((c) => [...c, { ...data }]);
+  const handleSubmitItem = (item) => {
+    return update_create_Item(item)
+      .then((addedItem) => {
+        const data = addedItem?.data;
+        setDishItems((c) => [...c, { ...data }]);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const handleDelete = (itemId) => {
-    const deleteItem = data.filter((item) => item["_id"] !== itemId);
-    axios.delete(`http://localhost:9000/dishes/${itemId}`).then((data) => {
-      setData((c) => [...c, data]);
-    });
-    setData(deleteItem);
+  const handleDelete = (dishItem) => {
+    const result = window.confirm(
+      `Are you sure you want to delete ${dishItem?.name}`
+    );
+    // const deletedItem = dishItems.filter((item) => item["_id"] !== itemId);
+    if (result) {
+      return deleteItem(dishItem).then(() => {
+        setDishItems((items) =>
+          items.filter((item) => item?._id !== dishItem?._id)
+        );
+        // setDishItems(deletedItem);
+      });
+    }
   };
 
   if (isLoading) {
@@ -74,9 +83,11 @@ function App() {
 
   return (
     <div key={Math.random()}>
-      <div className={classNames(data.length === 0 ? "hidden" : "container")}>
-        {data &&
-          data.map((item) => {
+      <div
+        className={classNames(dishItems.length === 0 ? "hidden" : "container")}
+      >
+        {dishItems &&
+          dishItems.map((item) => {
             return (
               <div key={item._id} className="item">
                 <div className="img__wrapper">
@@ -99,10 +110,7 @@ function App() {
                   <p>Menu: {item.category}</p>
                   <p>Day of the Time: {item.category1}</p>
                   <p>Availability: {item.available}</p>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="button"
-                  >
+                  <button onClick={() => handleDelete(item)} className="button">
                     Delete Item:
                   </button>
                   <button
@@ -121,7 +129,7 @@ function App() {
                         setCurrentPet(null);
                         setNewPetOpen(false);
                       }}
-                      onSubmit={savePet}
+                      onSubmit={saveItem}
                       item={item}
                     />
                   )}
@@ -131,10 +139,17 @@ function App() {
           })}
       </div>
 
-      <CreateDishItems onSubmit={handleSubmit} />
-      <button onClick={handleClear} className="button">
-        Remove all Data
-      </button>
+      <CreateDishItems onSubmit={handleSubmitItem} />
+      {dishItems.length >= 2 && (
+        <button
+          onClick={handleRemoveItems}
+          className="button"
+          type="button"
+          style={{ marginTop: 10 }}
+        >
+          Remove all Items
+        </button>
+      )}
     </div>
   );
 }
