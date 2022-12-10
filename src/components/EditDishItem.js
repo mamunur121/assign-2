@@ -33,8 +33,8 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
           setDescription={setDescription}
           mealTime={mealTime}
           setMealTime={setMealTime}
-          catalogue={setCatalogue}
-          setCategory={setCatalogue}
+          catalogue={catalogue}
+          setCatalogue={setCatalogue}
           available={available}
           setAvailable={setAvailable}
           price={price}

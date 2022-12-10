@@ -35,8 +35,8 @@ const CreateDishItems = ({ onSubmit }) => {
           setDescription={setDescription}
           mealTime={mealTime}
           setMealTime={setMealTime}
-          setCategory={setCatalogue}
-          catalogue={setCatalogue}
+          catalogue={catalogue}
+          setCatalogue={setCatalogue}
           available={available}
           setAvailable={setAvailable}
           price={price}

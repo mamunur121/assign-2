@@ -29,8 +29,8 @@ const MenuItem = ({
         <h2>Name: {item.name}</h2>
         <p>Description: {item.description}</p>
         <h3>Price: {formatNumber(item.price)}</h3>
-        <p>Menu: {item.category}</p>
-        <p>Day of the Time: {item.category1}</p>
+        <p>Menu: {item.catalogue}</p>
+        <p>Day of the Time: {item.mealTime}</p>
         <p>Availability: {item.available}</p>
         <button onClick={handleDelete} className="button">
           Delete Item:

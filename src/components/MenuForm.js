@@ -46,7 +46,7 @@ const MenuForm = ({
       >
         <option value="">Choose a Catalogue</option>
         <option value="starter">Starter</option>
-        <option value="main_course">Mani Course</option>
+        <option value="main_course">Main Course</option>
         <option value="dessert">Dessert</option>
         <option value="beverage">Beverage</option>
       </select>
