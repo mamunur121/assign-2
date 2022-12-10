@@ -8,6 +8,7 @@ const CreateDishItems = ({ onSubmit }) => {
   const [mealTime, setMealTime] = useState("");
   const [price, setPrice] = useState(0);
   const [available, setAvailable] = useState("");
+  const [timer, setTimer] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ const CreateDishItems = ({ onSubmit }) => {
     setName("");
     setDescription("");
     setPrice(0);
+    setTimer(0);
     setCatalogue("");
     setMealTime("");
     setAvailable("");
@@ -41,6 +43,8 @@ const CreateDishItems = ({ onSubmit }) => {
           setAvailable={setAvailable}
           price={price}
           setPrice={setPrice}
+          timer={timer}
+          setTimer={setTimer}
         />
         <button type="button" onClick={handleClear}>
           Reset Item Value

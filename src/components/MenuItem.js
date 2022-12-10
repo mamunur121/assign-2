@@ -22,8 +22,11 @@ const MenuItem = ({
   const display_sold_out = classNames(
     item?.available === "no" ? "sold_out" : "hidden"
   );
+  const deactivate_item = classNames(
+    item?.available === "no" ? "selectable" : ""
+  );
   return (
-    <div key={item._id} className="item">
+    <div key={item._id} className={`item ${deactivate_item}`}>
       <div className="img__wrapper">
         <p className={display_sold_out}>Sold out</p>
         <h2>Name: {item.name}</h2>
@@ -39,6 +42,7 @@ const MenuItem = ({
           <button className="button" onClick={openModal}>
             Edit Item
           </button>
+          <button className="button">Order Item</button>
           {currentItem && (
             <EditDishItems
               onCancel={closeModal}

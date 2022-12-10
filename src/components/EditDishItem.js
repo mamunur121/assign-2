@@ -9,6 +9,7 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
   const [catalogue, setCatalogue] = useState(item.catalogue);
   const [mealTime, setMealTime] = useState(item.mealTime);
   const [available, setAvailable] = useState(item.available);
+  const [timer, setTimer] = useState(item.timer);
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
@@ -19,6 +20,7 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
       catalogue,
       available,
       price,
+      timer,
     });
   };
 
@@ -39,6 +41,8 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
           setAvailable={setAvailable}
           price={price}
           setPrice={setPrice}
+          timer={timer}
+          setTimer={setTimer}
         />
         <button type="button" onClick={onCancel}>
           Cancel

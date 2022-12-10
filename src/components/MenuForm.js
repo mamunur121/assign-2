@@ -13,6 +13,8 @@ const MenuForm = ({
   setMealTime,
   available,
   setAvailable,
+  timer,
+  setTimer,
 }) => {
   return (
     <>
@@ -75,6 +77,13 @@ const MenuForm = ({
         <option value="yes">Yes</option>
         <option value="no">No</option>
       </select>
+      <label htmlFor="timer">Timer for Prepare Dish(in ms)</label>
+      <input
+        type="text"
+        id="timer"
+        value={timer}
+        onChange={(e) => setTimer(e.target.value)}
+      />
     </>
   );
 };
