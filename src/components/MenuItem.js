@@ -5,19 +5,19 @@ import { formatNumber } from "../utils/utils";
 
 const MenuItem = ({
   item,
-  currentPet,
-  setCurrentPet,
-  setNewPetOpen,
+  currentItem,
+  setCurrentItem,
+  setIsNewItemOpen,
   handleDelete,
   saveItem,
 }) => {
   const openModal = () => {
-    setCurrentPet(item);
-    setNewPetOpen(true);
+    setCurrentItem(item);
+    setIsNewItemOpen(true);
   };
   const closeModal = () => {
-    setCurrentPet(null);
-    setNewPetOpen(false);
+    setCurrentItem(null);
+    setIsNewItemOpen(false);
   };
   const display_sold_out = classNames(
     item?.available === "no" ? "sold_out" : "hidden"
@@ -38,7 +38,7 @@ const MenuItem = ({
         <button className="button" onClick={openModal}>
           Edit Item
         </button>
-        {currentPet && (
+        {currentItem && (
           <EditDishItems
             onCancel={closeModal}
             onSubmit={saveItem}

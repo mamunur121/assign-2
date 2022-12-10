@@ -42,7 +42,6 @@ router.get("/dishes/clear", (req, res) => {
 
   res.json({
     status: "OK",
-    _dishes: [],
   });
 });
 

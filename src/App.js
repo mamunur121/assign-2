@@ -12,11 +12,11 @@ import MenuItem from "./components/MenuItem";
 
 function App() {
   const [dishItems, setDishItems] = useState([]);
-  const [isNewPetOpen, setNewPetOpen] = useState(false);
-  const [currentPet, setCurrentPet] = useState(null);
+  const [isNewItemOpen, setIsNewItemOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  const saveItem = async (item) => {
+  const saveItem = (item) => {
     return update_create_Item(item)
       .then((updatedItem) => {
         setDishItems((items) =>
@@ -24,7 +24,7 @@ function App() {
             item?._id === updatedItem?.data?._id ? updatedItem?.data : item
           )
         );
-        setCurrentPet(null);
+        setCurrentItem(null);
       })
       .catch((err) => {
         console.error(err);
@@ -66,13 +66,11 @@ function App() {
     const result = window.confirm(
       `Are you sure you want to delete ${dishItem?.name}`
     );
-    // const deletedItem = dishItems.filter((item) => item["_id"] !== itemId);
     if (result) {
       return deleteItem(dishItem).then(() => {
         setDishItems((items) =>
           items.filter((item) => item?._id !== dishItem?._id)
         );
-        // setDishItems(deletedItem);
       });
     }
   };
@@ -91,9 +89,9 @@ function App() {
             return (
               <MenuItem
                 item={item}
-                currentPet={currentPet}
-                setCurrentPet={setCurrentPet}
-                setNewPetOpen={setNewPetOpen}
+                currentItem={currentItem}
+                setCurrentItem={setCurrentItem}
+                setIsNewItemOpen={setIsNewItemOpen}
                 handleDelete={() => handleDelete(item)}
                 saveItem={saveItem}
               />
