@@ -32,19 +32,21 @@ const MenuItem = ({
         <p>Menu: {item.catalogue}</p>
         <p>Day of the Time: {item.mealTime}</p>
         <p>Availability: {item.available}</p>
-        <button onClick={handleDelete} className="button">
-          Delete Item:
-        </button>
-        <button className="button" onClick={openModal}>
-          Edit Item
-        </button>
-        {currentItem && (
-          <EditDishItems
-            onCancel={closeModal}
-            onSubmit={saveItem}
-            item={item}
-          />
-        )}
+        <div className="actionButton">
+          <button onClick={handleDelete} className="button">
+            Delete Item:
+          </button>
+          <button className="button" onClick={openModal}>
+            Edit Item
+          </button>
+          {currentItem && (
+            <EditDishItems
+              onCancel={closeModal}
+              onSubmit={saveItem}
+              item={item}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

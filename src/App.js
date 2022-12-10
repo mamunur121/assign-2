@@ -80,7 +80,7 @@ function App() {
   }
 
   return (
-    <div key={Math.random()}>
+    <main>
       <div
         className={classNames(dishItems.length === 0 ? "hidden" : "container")}
       >
@@ -88,6 +88,7 @@ function App() {
           dishItems.map((item) => {
             return (
               <MenuItem
+                key={item?._id}
                 item={item}
                 currentItem={currentItem}
                 setCurrentItem={setCurrentItem}
@@ -110,7 +111,7 @@ function App() {
           Remove all Items
         </button>
       )}
-    </div>
+    </main>
   );
 }
 

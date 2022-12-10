@@ -27,7 +27,7 @@ const CreateDishItems = ({ onSubmit }) => {
   return (
     <div className="App">
       <h2>New Menu</h2>
-      <form className="pet-form" onSubmit={handleSubmit}>
+      <form className="item-form" onSubmit={handleSubmit}>
         <MenuForm
           name={name}
           setName={setName}
@@ -43,7 +43,7 @@ const CreateDishItems = ({ onSubmit }) => {
           setPrice={setPrice}
         />
         <button type="button" onClick={handleClear}>
-          Cancel
+          Reset Item Value
         </button>
         <button type="submit" disabled={!name.length}>
           Save

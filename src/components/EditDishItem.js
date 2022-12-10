@@ -6,8 +6,8 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
   const [name, setName] = useState(item.name);
   const [description, setDescription] = useState(item.description);
   const [price, setPrice] = useState(item.price);
-  const [catalogue, setCatalogue] = useState("");
-  const [mealTime, setMealTime] = useState("");
+  const [catalogue, setCatalogue] = useState(item.catalogue);
+  const [mealTime, setMealTime] = useState(item.mealTime);
   const [available, setAvailable] = useState(item.available);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const EditDishItems = ({ onCancel, onSubmit, item }) => {
   return (
     <Modal isOpen={true} onRequestClose={onCancel}>
       <h2>Edit Item</h2>
-      <form className="pet-form" onSubmit={handleSubmit}>
+      <form className="item-form" onSubmit={handleSubmit}>
         <MenuForm
           name={name}
           setName={setName}
